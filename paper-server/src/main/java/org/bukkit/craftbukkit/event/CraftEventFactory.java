@@ -708,11 +708,11 @@ public class CraftEventFactory {
         return event;
     }
 
-    public static BlockDamageAbortEvent callBlockDamageAbortEvent(ServerPlayer player, BlockPos pos, ItemStack item) {
+    public static BlockDamageAbortEvent callBlockDamageAbortEvent(ServerPlayer player, BlockPos pos, ItemStack item, final BlockDamageAbortEvent.Reason reason) {
         CraftItemStack itemInHand = CraftItemStack.asCraftMirror(item);
         Block clickedBlock = CraftBlock.at(player.level(), pos);
 
-        BlockDamageAbortEvent event = new BlockDamageAbortEvent(player.getBukkitEntity(), clickedBlock, itemInHand);
+        BlockDamageAbortEvent event = new BlockDamageAbortEvent(player.getBukkitEntity(), clickedBlock, itemInHand, reason);
         event.callEvent();
 
         return event;

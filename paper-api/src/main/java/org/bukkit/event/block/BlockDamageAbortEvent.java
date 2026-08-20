@@ -4,6 +4,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,11 +18,14 @@ public class BlockDamageAbortEvent extends BlockEvent {
 
     private final Player player;
     private final ItemStack itemstack;
+    private final Reason reason;
 
-    public BlockDamageAbortEvent(@NotNull final Player player, @NotNull final Block block, @NotNull final ItemStack itemInHand) {
+    @ApiStatus.Internal
+    public BlockDamageAbortEvent(@NotNull final Player player, @NotNull final Block block, @NotNull final ItemStack itemInHand, @NotNull final Reason reason) {
         super(block);
         this.player = player;
         this.itemstack = itemInHand;
+        this.reason = reason;
     }
 
     /**
@@ -44,6 +48,15 @@ public class BlockDamageAbortEvent extends BlockEvent {
         return this.itemstack;
     }
 
+    /**
+     * Gets the Reason for the block damage to abort.
+     *
+     * @return The Reason for the block damage to abort
+     */
+    public Reason getReason() {
+        return this.reason;
+    }
+
     @NotNull
     @Override
     public HandlerList getHandlers() {
@@ -53,5 +66,24 @@ public class BlockDamageAbortEvent extends BlockEvent {
     @NotNull
     public static HandlerList getHandlerList() {
         return HANDLER_LIST;
+    }
+
+    public enum Reason {
+        /**
+         * Unknown reason
+         */
+        UNKNOWN,
+        /**
+         * Player stopped damaging the block
+         */
+        PLAYER,
+        /**
+         * Block is in an unloaded chunk
+         */
+        UNLOADED_CHUNK,
+        /**
+         * Block is air
+         */
+        IS_AIR
     }
 }

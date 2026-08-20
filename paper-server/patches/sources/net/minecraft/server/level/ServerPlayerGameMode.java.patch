@@ -72,7 +72,7 @@
                  this.hasDelayedDestroy = false;
              } else {
                  float destroyProgress = this.incrementDestroyProgress(blockState, this.delayedDestroyPos, this.delayedTickStart);
-@@ -118,7 +_,13 @@
+@@ -118,11 +_,19 @@
                  }
              }
          } else if (this.isDestroyingBlock) {
@@ -81,12 +81,18 @@
 +            BlockState blockState = this.level.getBlockStateIfLoaded(this.destroyPos);
 +            if (blockState == null) {
 +                this.isDestroyingBlock = false;
++                org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDamageAbortEvent(this.player, this.destroyPos, this.player.getInventory().getSelectedItem(), org.bukkit.event.block.BlockDamageAbortEvent.Reason.UNLOADED_CHUNK);
 +                return;
 +            }
 +            // Paper end - Don't allow digging into unloaded chunks
              if (blockState.isAir()) {
                  this.level.destroyBlockProgress(this.player.getId(), this.destroyPos, -1);
                  this.lastSentState = -1;
+                 this.isDestroyingBlock = false;
++                org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDamageAbortEvent(this.player, this.destroyPos, this.player.getInventory().getSelectedItem(), org.bukkit.event.block.BlockDamageAbortEvent.Reason.IS_AIR);
+             } else {
+                 this.incrementDestroyProgress(blockState, this.destroyPos, this.destroyProgressStart);
+             }
 @@ -151,6 +_,7 @@
          final BlockPos pos, final ServerboundPlayerActionPacket.Action action, final Direction direction, final int maxY, final int sequence
      ) {
@@ -187,7 +193,7 @@
                  this.level.destroyBlockProgress(this.player.getId(), pos, -1);
                  this.debugLogging(pos, true, sequence, "aborted destroying");
 +
-+                org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDamageAbortEvent(this.player, pos, this.player.getInventory().getSelectedItem()); // CraftBukkit
++                org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDamageAbortEvent(this.player, pos, this.player.getInventory().getSelectedItem(), org.bukkit.event.block.BlockDamageAbortEvent.Reason.PLAYER); // CraftBukkit
              }
          }
      }
