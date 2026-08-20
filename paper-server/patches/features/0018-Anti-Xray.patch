@@ -168,11 +168,11 @@ index 762e3b71a8df572234b03dec60d2b6e1e339bb6a..59598bfb95c2f8a38efd92685c46a954
          this.weatherData.setLevel(this);
          this.typeKey = typeKey;
 diff --git a/net/minecraft/server/level/ServerPlayerGameMode.java b/net/minecraft/server/level/ServerPlayerGameMode.java
-index aba758c0f6a8b79b952808a96f0f8ee7c6de0036..1482ddb0aae5ea984323e4b64ec41aea59eae413 100644
+index 571e11418339efee0c09d6a070c9a2fcbb978802..2693803ab51ee8eb88b5e344168f61db239f2283 100644
 --- a/net/minecraft/server/level/ServerPlayerGameMode.java
 +++ b/net/minecraft/server/level/ServerPlayerGameMode.java
 @@ -322,6 +322,7 @@ public class ServerPlayerGameMode {
-                 org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDamageAbortEvent(this.player, pos, this.player.getInventory().getSelectedItem(), org.bukkit.event.block.BlockDamageAbortEvent.Reason.PLAYER); // CraftBukkit
+                 org.bukkit.craftbukkit.event.CraftEventFactory.callBlockDamageAbortEvent(this.player, pos, this.player.getInventory().getSelectedItem(), org.bukkit.event.block.BlockDamageAbortEvent.Reason.PLAYER); // CraftBukkit // Paper - Added reason
              }
          }
 +        this.level.chunkPacketBlockController.onPlayerLeftClickBlock(this.level, pos, action, direction, maxY, sequence); // Paper - Anti-Xray
